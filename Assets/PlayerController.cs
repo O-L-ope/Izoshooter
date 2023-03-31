@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.up * movementVector.x);
         //przesuniêcie do przodu (transform.forward) o wychylenie osi Y kontrolera w czasie jednej klatki
         transform.Translate(Vector3.forward * movementVector.y * Time.deltaTime * playerSpeed);
+        
     }
     
     void OnMove(InputValue inputValue) 
@@ -59,6 +60,12 @@ public class PlayerController : MonoBehaviour
             Vector3 pushVector = collision.gameObject.transform.position - transform.position;
             collision.gameObject.GetComponent<Rigidbody>().AddForce(pushVector.normalized*5, ForceMode.Impulse);
         }
+        if(collision.gameObject.CompareTag("Heal"))
+        {
+            hp = 10;
+            hpScrollBar.size = hp / 10;
+            Destroy(collision.gameObject);
+        }
     }
     void Die()
     {
@@ -68,4 +75,5 @@ public class PlayerController : MonoBehaviour
         
         //Time.timeScale = 0;
     }
+
 }
