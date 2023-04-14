@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -16,22 +17,37 @@ public class PlayerController : MonoBehaviour
     public GameObject hpBar;
     Scrollbar hpScrollBar;
 
+    
     // Start is called before the first frame update
     void Start()
     {
         movementVector = Vector2.zero;
         bulletSpawn = transform.Find("BulletSpawn");
         hpScrollBar = hpBar.GetComponent<Scrollbar>();
+        agent = GetComponent<NavMeshAgent>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         //obrót wokó³ osi Y o iloœæ stopni równ¹ wartosci osi X kontrolera
-        transform.Rotate(Vector3.up * movementVector.x);
+        // transform.Rotate(Vector3.up * movementVector.x);
         //przesuniêcie do przodu (transform.forward) o wychylenie osi Y kontrolera w czasie jednej klatki
-        transform.Translate(Vector3.forward * movementVector.y * Time.deltaTime * playerSpeed);
-        
+        // transform.Translate(Vector3.forward * movementVector.y * Time.deltaTime * playerSpeed);
+
+
+        Vector3 rotation = new Vector3(0, movementVector.x, 0);
+        transform.Rotate(rotation);
+        if (movementVector.y > 0)
+        {
+            agent.destination = transform.position + transform.forward;
+        }
+        if (movementVector.y == 0)
+        {
+            agent.isStopped = true;
+        }
+            
     }
     
     void OnMove(InputValue inputValue) 
