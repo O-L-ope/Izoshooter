@@ -4,6 +4,7 @@ using System.Transactions;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class ZombieController : MonoBehaviour
 {
@@ -23,10 +24,42 @@ public class ZombieController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool seesPlayer = false;
+        bool hearsPlayer = false;
+        
+        RaycastHit hit;
+        Vector3 playerVector = player.position - transform.position;
+        Debug.DrawRay(transform.position, playerVector, Color.yellow);
+        if (Physics.Raycast(transform.position, playerVector, out hit))
+        {
+            Debug.Log("widzê:" + hit.transform.name);
+        }
+            
+        
+        
         //transform.LookAt(player.position);
         //transform.Translate(Vector3.forward * Time.deltaTime);
+        if(hit.collider.gameObject.CompareTag("Player"))
+        seesPlayer= true;
 
-        agent.destination = player.position;
+        Collider[] nearby = Physics.OverlapSphere(transform.position, 5f);
+        foreach(Collider collider in nearby)
+        {
+            if (collider.transform.CompareTag("Player"))
+            {
+                hearsPlayer = true;
+            }    
+        }
+
+        if(seesPlayer || hearsPlayer)
+        {
+            agent.destination = player.position;
+            agent.isStopped = false;
+        }
+        else
+        {
+            agent.isStopped = true;
+        }
     }
 
     public void ReceiveDamage(int amount)

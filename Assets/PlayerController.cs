@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     Transform bulletSpawn;
     public GameObject hpBar;
     Scrollbar hpScrollBar;
+    NavMeshAgent agent;
 
     
     // Start is called before the first frame update
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
         if (movementVector.y > 0)
         {
             agent.destination = transform.position + transform.forward;
+            agent.isStopped = false;
         }
         if (movementVector.y == 0)
         {
