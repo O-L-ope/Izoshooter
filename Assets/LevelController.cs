@@ -14,6 +14,8 @@ public class LevelController : MonoBehaviour
     void Start()
     {
         maximumEnemies = 3;
+
+        Time.timeScale = 1.0f;
     }
 
     // Update is called once per frame
