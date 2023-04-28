@@ -87,6 +87,7 @@ public class PlayerController : MonoBehaviour
     }
     void Die()
     {
+        Application.Quit();
         GetComponent<BoxCollider>().enabled = false;
         transform.Translate(Vector3.up);
         transform.Rotate(Vector3.right * -90);
