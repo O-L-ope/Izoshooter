@@ -67,22 +67,22 @@ public class PlayerController : MonoBehaviour
         Destroy(bullet, 5);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
+        if(other.gameObject.CompareTag("Enemy"))
         {
    
             hp--;
             if(hp <= 0) Die();
             hpScrollBar.size = hp / 10;
-            Vector3 pushVector = collision.gameObject.transform.position - transform.position;
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(pushVector.normalized*5, ForceMode.Impulse);
+            Vector3 pushVector = other.gameObject.transform.position - transform.position;
+            other.gameObject.GetComponent<Rigidbody>().AddForce(pushVector.normalized*5, ForceMode.Impulse);
         }
-        if(collision.gameObject.CompareTag("Heal"))
+        if(other.gameObject.CompareTag("Heal"))
         {
             hp = 10;
             hpScrollBar.size = hp / 10;
-            Destroy(collision.gameObject);
+            Destroy(other.gameObject);
         }
     }
     void Die()
